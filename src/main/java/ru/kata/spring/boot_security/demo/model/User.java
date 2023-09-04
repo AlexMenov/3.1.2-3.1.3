@@ -53,7 +53,7 @@ public class User implements UserDetails, Serializable {
     private String password;
 
     @NotNull
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns =
             @JoinColumn(name = "users_id", referencedColumnName = "id"),
@@ -68,10 +68,6 @@ public class User implements UserDetails, Serializable {
                 .sorted(Comparator.comparing(Role::getRole))
                 .map(role -> role.getRole().toLowerCase())
                 .collect(Collectors.toList());
-    }
-
-    public boolean isAdmin() {
-        return getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"));
     }
 
     @Override
